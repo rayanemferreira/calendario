@@ -1,62 +1,64 @@
 import React from 'react';
 import { Button, Form, Input, Select, DatePicker } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { useDataContext } from './components/contexts/Context';
+import { useDataContext } from './contexts/Context';
 
-const { Option } = Select;
 
 const Formulario = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const { setData } = useDataContext();
+  const { data, setData } = useDataContext();
 
 
-
-  //   {
-  //     "title": "ffffff",
-  //     "TextArea": "fffffffffffffffffff",
-  //     "startDate": "2024-02-15T04:00:00.000Z",
-  //     "endDate": "2024-02-23T04:00:00.000Z",
-  //     "localizacao": "ffff",
-  //     "participantes": "ffffffff",
-  //     "type": "warning",
-  //     "content": "ffffff",
-  //     "id": "1907bd33-b187-421e-9d6f-a93865e8fc75"
-  // }
-
+  const location = useLocation();
 
   const handleSubmit = () => {
     form.validateFields()
       .then(values => {
         const endDate = values.endDate.format('YYYY-MM-DD');
+
+        const currentDate = new Date(endDate);
+        const endDateObject = new Date(endDate);
+
+        const id = location.state?.id; // Obtém o ID do estado de localização, se existir
+
         const novoDado = {
           ...values,
           type: 'success',
           content: values.title,
-          id: uuidv4(),
+          id: id || uuidv4(), // Se não houver um ID, gera um novo UUID
         };
 
-        setData(prevState => {
-          return {
-            ...prevState,
-            [endDate]: [...(prevState[endDate] || []), novoDado],
-          };
-        });
+        const newData = { ...data };
 
+        while (currentDate <= endDateObject) {
+          const currentDateStr = currentDate.toISOString().split('T')[0];
+          if (id) {
+            // Se estiver editando, encontra e atualiza o item com o ID correspondente
+            newData[currentDateStr] = (newData[currentDateStr] || []).map(item => {
+              if (item.id === id) {
+                return novoDado;
+              }
+              return item;
+            });
+          } else {
+            // Se estiver criando, adiciona o novo item ao array
+            newData[currentDateStr] = [...(newData[currentDateStr] || []), novoDado];
+          }
 
-        navigate('/layout', {
-          state: {
-            ...values,
-            id: uuidv4(),
-          },
-        });
+          currentDate.setDate(currentDate.getDate() + 1); // Incrementa a data
+        }
+
+        setData(newData);
+        navigate('/layout');
       })
       .catch(errorInfo => {
         console.log('Falha na validação:', errorInfo);
       });
   };
 
+  console.log('location?.state', location?.state)
   return (
     <Form
       form={form}
@@ -76,32 +78,44 @@ const Formulario = () => {
       <Form.Item
         label="Titulo"
         name="title"
+        initialValue={location?.state?.title}
+
         rules={[
           {
             required: true,
-            message: 'Por favor, informe o título!',
+            message: 'Por Favor, informe o campo!',
           },
         ]}
       >
-        <Input />
+
+        <Input
+          defaultChecked
+        />
       </Form.Item>
+
 
       <Form.Item
         label="Descrição"
-        name="description"
+        name="TextArea"
+        initialValue={location?.state?.TextArea}
+
         rules={[
           {
             required: true,
-            message: 'Por favor, informe a descrição!',
+            message: 'Por Favor, informe o campo!',
           },
         ]}
       >
         <Input.TextArea />
       </Form.Item>
 
+
+
       <Form.Item
         label="Status"
         name="status"
+        initialValue={location?.state?.status}
+
         rules={[
           {
             required: true,
@@ -120,6 +134,8 @@ const Formulario = () => {
       <Form.Item
         label="Prioridade"
         name="priority"
+        initialValue={location?.state?.priority}
+
         rules={[
           {
             required: true,
@@ -137,6 +153,8 @@ const Formulario = () => {
       <Form.Item
         label="Data de Fim"
         name="endDate"
+        initialValue={location?.state?.endDate}
+
         rules={[
           {
             required: true,
@@ -147,12 +165,24 @@ const Formulario = () => {
         <DatePicker />
       </Form.Item>
 
+
+
+
+
+
+
+
       <Form.Item
         wrapperCol={{
           offset: 6,
           span: 16,
         }}
+
+
       >
+
+        <br></br>
+
 
         <Button onClick={() => navigate("/layout")} type="primary">Voltar</Button>
         <Button type="primary" htmlType="submit">Submit</Button>
@@ -162,3 +192,4 @@ const Formulario = () => {
 };
 
 export default Formulario;
+

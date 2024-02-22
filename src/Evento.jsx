@@ -1,35 +1,9 @@
 import React from 'react';
-
-
-
 import { Button, Form, Input, Select, DatePicker } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { useDataContext } from './components/contexts/Context';
+import { useDataContext } from './contexts/Context';
 
-const formItemLayout = {
-
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 6,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 14,
-    },
-  },
-};
-
-
-
-const { Option } = Select;
 
 const Evento = () => {
   const navigate = useNavigate();
@@ -48,7 +22,7 @@ const Evento = () => {
         const currentDate = new Date(startDate);
         const endDateObject = new Date(endDate);
 
-        const id = location.state.id; // Obtém o ID do estado de localização, se existir
+        const id = location.state?.id; // Obtém o ID do estado de localização, se existir
 
         const novoDado = {
           ...values,

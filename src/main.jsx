@@ -9,7 +9,7 @@ import Evento from "./Evento.jsx";
 
 import { ConfigProvider } from 'antd';
 import Formulario from "./Formulario.jsx";
-import { DataProvider } from "./components/contexts/Context.jsx";
+import { DataProvider } from "./contexts/Context.jsx";
 
 const router = createBrowserRouter([
   {

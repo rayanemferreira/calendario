@@ -6,11 +6,7 @@ const { Header, Content, Sider } = Layout;
 import { Button, Flex } from 'antd';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDataContext } from './components/contexts/Context.jsx';
-// const items1 = ['1', '2', '3'].map((key) => ({
-//   key,
-//   label: `nav ${key}`,
-// }));
+import { useDataContext } from './contexts/Context.jsx';
 const items2 = [
   { icon: UserOutlined, name: "Usuario", options: ['Configuraçoes'] },
   { icon: NotificationOutlined, name: "Alarme", options: ['Criar alarme'] },
