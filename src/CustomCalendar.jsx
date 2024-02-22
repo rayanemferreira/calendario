@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Badge, Calendar } from 'antd';
 
 import dayjs from 'dayjs';
-import Alert from 'antd/es/alert/Alert';
 import CustomModal from './components/CustomModal/CustomModal';
 
 
@@ -70,7 +69,6 @@ const CustomCalendar = ({ data, setData }) => {
   };
 
   return <>
-    <Alert message={`You selected date: ${selectedValue?.format('YYYY-MM-DD')}`} />
 
     <CustomModal
       setData={setData}

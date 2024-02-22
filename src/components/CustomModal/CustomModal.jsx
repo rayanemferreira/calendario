@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Divider, Modal, Popconfirm, Table } from 'antd';
 import Link from 'antd/es/typography/Link';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
+
 
 const CustomModal = ({
   data,
@@ -58,6 +60,11 @@ const CustomModal = ({
         key: 'content',
       },
       {
+        title: 'priority',
+        dataIndex: 'priority',
+        key: 'priority',
+      },
+      {
         title: 'ações',
         dataIndex: 'action',
         key: 'action',
@@ -94,7 +101,7 @@ const CustomModal = ({
   const disableSend = dataSource.length === 0 || isLoading;
   return (
     <Modal
-      title={'fff'}
+      title={'Lista de afazeres de ' + dayjs(selectedValue).format("DD-MM-YYYY")}
       onOk={() => onConfirm(dataSource, deleted)}
       onCancel={onCancel}
       open={isOpen}
@@ -106,6 +113,8 @@ const CustomModal = ({
       focusTriggerAfterClose={false}
       maskClosable={false}
       okText={'Fechar'}
+      cancelButtonProps={{ style: { display: 'none' } }}
+
       okButtonProps={{
         size: 'large',
         disabled: disableSend,
@@ -114,7 +123,6 @@ const CustomModal = ({
         setDataSource([]);
         setDeleted([]);
       }}
-      cancelButtonProps={{ size: 'large', disabled: isLoading }}
     >
       <Divider
         style={{
@@ -126,9 +134,7 @@ const CustomModal = ({
           padding: '1.5rem',
         }}
       >
-        <div>
-          nejeoe
-        </div>
+
         <div>
           <Table
             loading={isLoading}
@@ -144,7 +150,7 @@ const CustomModal = ({
           margin: 0,
         }}
       />
-    </Modal>
+    </Modal >
   );
 };
 
