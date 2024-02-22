@@ -55,12 +55,12 @@ const CustomModal = ({
   const columns = useMemo(() => {
     return [
       {
-        title: 'content',
+        title: 'Título',
         dataIndex: 'content',
         key: 'content',
       },
       {
-        title: 'priority',
+        title: 'Prioridade',
         dataIndex: 'priority',
         key: 'priority',
       },
